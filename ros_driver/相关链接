@@ -1,0 +1,12 @@
+（1）十六线雷达使用教程：http://wiki.ros.org/velodyne/Tutorials/Getting%20Started%20with%20the%20Velodyne%20VLP16
+（2）激光雷达驱动：
+https://github.com/ros-drivers/velodyne.git
+（3）PCAP回放命令：
+roslaunch velodyne_pointcloud VLP16_points.launch pcap:=/home/wss/Soft/Velodyne-VLP_10Hz_Monterey_Highway.pcap
+（4）激光雷达pcl库：
+http://pointclouds.org/documentation/tutorials/
+https://github.com/PointCloudLibrary/pcl
+https://github.com/PointCloudLibrary
+
+(5)参考论文：
+Fast Segmentation of 3D Point Clouds for Ground Vehicles

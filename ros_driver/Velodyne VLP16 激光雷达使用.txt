@@ -1,0 +1,40 @@
+Velodyne VLP16 激光雷达使用
+
+Velodyne VLP16型激光雷达横向视角360°，纵向视角30°。实验机器是ubuntu 16.04 x64， ROS版本kinetic，ROS支持的Velodyne型号是：HDL-64E，HDL-32E，VLP-16。官方tutorial是以32E为例，但我们手头是VLP-16，下面以VLP-16为例介绍驱动过程：
+
+1. 安装驱动：
+sudo apt-get install ros-kinetic-velodyne  
+
+2. 连接到激光雷达：
+首先配置有线网络，手动配置一下ip地址
+
+3. 新建一个ROS的工程：
+mkdir -p catkin_velodyne/src
+cd catkin_velodyne/src
+git clone https://github.com/ros-drivers/velodyne.git
+cd ..
+rosdep install --from-paths src --ignore-src --rosdistro kinetic -y
+catkin_make
+source devel/setup.bash
+
+4. 把Velodyne XML文件转成ROS节点的YAML文件（VLP-16.xml文件是激光雷达附赠U盘中提供的，转换后生成VLP-16.yaml）：
+rosrun velodyne_pointcloud gen_calibration.py VLP-16.xml
+ 
+5. 加载：
+roslaunch velodyne_pointcloud VLP16_points.launch _calibration:=VLP-16.yaml
+
+6. 实时显示点云图：
+ /rosrun rviz rviz -f velodyne  
+然后在rviz中点Add，增加PointCloud2，再在PointCloud2下点topic输入/velodyne_points。这样就可以实时显示获取的3D点云图。
+
+7. 记录数据：
+rosbag record -O 文件名 /velodyne_points  
+只保存/velodyne_points这个topic的数据（可以用rostopic list -v开看当前可用的topic），保存在当前目录的out.bag。
+保存所有topic用rosbag record -a
+
+8.回放ros包：rosbag play -r 速率 文件名.bag
+
+9. 后记：
+VeloView也是可以实时显示3D LiDAR激光雷达点云图的，保存格式是pcap。
+
+可以用rosrun rqt_graph rqt_graph检查节点
